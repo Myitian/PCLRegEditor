@@ -1,0 +1,110 @@
+﻿<UserControl x:Name="self"
+             x:Class="PCLRegEditorGUI.WPF.Controls.LaunchArgumentJavaAllEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PCLRegEditorGUI.WPF.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="200"
+             d:DesignWidth="640">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <ListView x:Name="LV_Main"
+              Grid.ColumnSpan="4"
+              VirtualizingPanel.ScrollUnit="Pixel"
+              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+              ScrollViewer.VerticalScrollBarVisibility="Auto"
+              ItemsSource="{Binding Values, ElementName=self, Mode=OneWay}"
+              SelectionChanged="SelectionChanged">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Width="80"
+                          DisplayMemberBinding="{Binding VersionString}"
+                          Header="版本" />
+          <GridViewColumn Width="400"
+                          DisplayMemberBinding="{Binding Path}"
+                          Header="路径" />
+          <GridViewColumn Width="30"
+                          Header="JRE">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding IsJre}"
+                          IsHitTestVisible="False"
+                          Focusable="False" />
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Width="40"
+                          Header="64bit">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding Is64Bit}"
+                          IsHitTestVisible="False"
+                          Focusable="False" />
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Width="60"
+                          Header="用户导入">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding IsUserImport}"
+                          IsHitTestVisible="False"
+                          Focusable="False" />
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+        </GridView>
+      </ListView.View>
+    </ListView>
+    <Button Grid.Row="1"
+            Content="添加"
+            Click="Add_Click" />
+    <Button Grid.Row="1"
+            Grid.Column="1"
+            Content="删除"
+            Click="Remove_Click" />
+    <Button Grid.Row="1"
+            Grid.Column="2"
+            Content="上移"
+            Click="MoveUp_Click" />
+    <Button Grid.Row="1"
+            Grid.Column="3"
+            Content="下移"
+            Click="MoveDown_Click" />
+    <TextBox Grid.Row="2"
+             Grid.ColumnSpan="3"
+             Text="{Binding EditingObject.VersionString, ElementName=self, Mode=TwoWay}" />
+    <Button Grid.Row="2"
+            Grid.Column="3"
+            Content="替换所选"
+            Click="Replace_Click" />
+    <TextBox Grid.Row="3"
+             Grid.ColumnSpan="4"
+             Text="{Binding EditingObject.Path, ElementName=self, Mode=TwoWay}" />
+    <CheckBox Grid.Row="4"
+              IsChecked="{Binding EditingObject.IsJre, ElementName=self, Mode=TwoWay}"
+              Content="JRE" />
+    <CheckBox Grid.Row="4"
+              Grid.Column="1"
+              IsChecked="{Binding EditingObject.Is64Bit, ElementName=self, Mode=TwoWay}"
+              Content="64bit" />
+    <CheckBox Grid.Row="4"
+              Grid.Column="2"
+              IsChecked="{Binding EditingObject.IsUserImport, ElementName=self, Mode=TwoWay}"
+              Content="用户导入" />
+  </Grid>
+</UserControl>

@@ -1,0 +1,157 @@
+﻿<Window x:Class="PCLRegEditorGUI.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PCLRegEditorGUI.WPF"
+        xmlns:ctrl="clr-namespace:PCLRegEditorGUI.WPF.Controls"
+        mc:Ignorable="d"
+        Height="400"
+        Width="700"
+        Title="{Binding TitleValue, Mode=OneWay}"
+        DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
+  <Window.Resources>
+    <ResourceDictionary>
+      <Style TargetType="local:MainWindow">
+        <Setter Property="BasicTitle"
+                Value="PCL注册表编辑器" />
+      </Style>
+      <RoutedUICommand x:Key="CMD_Save"
+                       Text="保存" />
+      <RoutedUICommand x:Key="CMD_Reload"
+                       Text="重新加载" />
+      <RoutedUICommand x:Key="CMD_Export"
+                       Text="导出备份" />
+      <RoutedUICommand x:Key="CMD_About"
+                       Text="关于" />
+    </ResourceDictionary>
+  </Window.Resources>
+  <Window.InputBindings>
+    <KeyBinding Key="S"
+                Modifiers="Ctrl"
+                Command="{StaticResource CMD_Save}" />
+    <KeyBinding Key="R"
+                Modifiers="Ctrl"
+                Command="{StaticResource CMD_Reload}" />
+    <KeyBinding Key="S"
+                Modifiers="Ctrl+Shift"
+                Command="{StaticResource CMD_Export}" />
+    <KeyBinding Key="H"
+                Modifiers="Ctrl"
+                Command="{StaticResource CMD_About}" />
+  </Window.InputBindings>
+  <Window.CommandBindings>
+    <CommandBinding Command="{StaticResource CMD_Save}"
+                    Executed="CMD_Save_Executed" />
+    <CommandBinding Command="{StaticResource CMD_Reload}"
+                    Executed="CMD_Reload_Executed" />
+    <CommandBinding Command="{StaticResource CMD_Export}"
+                    Executed="CMD_Export_Executed" />
+    <CommandBinding Command="{StaticResource CMD_About}"
+                    Executed="CMD_About_Executed" />
+  </Window.CommandBindings>
+  <DockPanel>
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="保存(_S)"
+                Command="{StaticResource CMD_Save}" />
+      <MenuItem Header="重新加载(_R)"
+                Command="{StaticResource CMD_Reload}" />
+      <MenuItem Header="导出备份(_E)"
+                Command="{StaticResource CMD_Export}" />
+      <MenuItem Header="关于(_A)"
+                Command="{StaticResource CMD_About}" />
+    </Menu>
+    <TabControl Grid.Row="1"
+                Margin="0,2,0,0">
+      <TabItem Header="基础模式">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <StackPanel>
+            <GroupBox Header="版本文件夹">
+              <ctrl:PairListRegValueEditorControl Height="200"
+                                                  Controller="{Binding Controller, Mode=OneWay}"
+                                                  RegValue="{Binding RegKeys.RegLaunchFolders, Mode=OneWay}" />
+            </GroupBox>
+            <GroupBox Header="缓存文件夹">
+              <ctrl:StringRegEntryEditorControl Controller="{Binding Controller, Mode=OneWay}"
+                                                RegValue="{Binding RegKeys.RegCacheDownloadFolder, Mode=OneWay}" />
+            </GroupBox>
+            <GroupBox Header="窗口尺寸">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition MaxWidth="150"
+                                    MinWidth="50" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Padding="5,0"
+                       VerticalContentAlignment="Center"
+                       Content="宽" />
+                <ctrl:DoubleRegEntryEditorControl Grid.Column="1"
+                                                  Height="20"
+                                                  TextAlignment="Left"
+                                                  MinValue="0"
+                                                  MaxValue="100000"
+                                                  Controller="{Binding Controller, Mode=OneWay}"
+                                                  RegValue="{Binding RegKeys.RegWindowWidth, Mode=OneWay}" />
+                <Label Grid.Row="1"
+                       Padding="5,0"
+                       VerticalContentAlignment="Center"
+                       Content="高" />
+                <ctrl:DoubleRegEntryEditorControl Grid.Row="1"
+                                                  Grid.Column="1"
+                                                  Height="20"
+                                                  TextAlignment="Left"
+                                                  MinValue="0"
+                                                  MaxValue="100000"
+                                                  Controller="{Binding Controller, Mode=OneWay}"
+                                                  RegValue="{Binding RegKeys.RegWindowHeight, Mode=OneWay}" />
+              </Grid>
+            </GroupBox>
+            <GroupBox Header="Java">
+              <ctrl:LaunchArgumentJavaAllEditorControl Height="200"
+                                                       Controller="{Binding Controller, Mode=OneWay}"
+                                                       RegValue="{Binding RegKeys.RegLaunchArgumentJavaAll, Mode=OneWay}" />
+            </GroupBox>
+            <GroupBox Header="登录类型">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition MaxWidth="150" />
+                </Grid.ColumnDefinitions>
+                <ctrl:LoginTypeRegEntryEditorControl IsEditable="True"
+                                                     Controller="{Binding Controller, Mode=OneWay}"
+                                                     RegValue="{Binding RegKeys.RegLoginType, Mode=OneWay}" />
+              </Grid>
+            </GroupBox>
+            <GroupBox Header="杂项">
+              <StackPanel>
+                <ctrl:BooleanRegEntryEditorControl Content="是否同意协议"
+                                                   Controller="{Binding Controller, Mode=OneWay}"
+                                                   RegValue="{Binding RegKeys.RegSystemEula, Mode=OneWay}" />
+                <ctrl:BooleanRegEntryEditorControl Content="HintBuy"
+                                                   Controller="{Binding Controller, Mode=OneWay}"
+                                                   RegValue="{Binding RegKeys.RegHintBuy, Mode=OneWay}" />
+                <ctrl:BooleanRegEntryEditorControl Content="HintHandInstall"
+                                                   Controller="{Binding Controller, Mode=OneWay}"
+                                                   RegValue="{Binding RegKeys.RegHintHandInstall, Mode=OneWay}" />
+                <ctrl:BooleanRegEntryEditorControl Content="HintInstallBack"
+                                                   Controller="{Binding Controller, Mode=OneWay}"
+                                                   RegValue="{Binding RegKeys.RegHintInstallBack, Mode=OneWay}" />
+                <ctrl:BooleanRegEntryEditorControl Content="HintUpdateMod"
+                                                   Controller="{Binding Controller, Mode=OneWay}"
+                                                   RegValue="{Binding RegKeys.RegHintUpdateMod, Mode=OneWay}" />
+              </StackPanel>
+            </GroupBox>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem Header="高级模式">
+        <Label Content="还没做" />
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</Window>

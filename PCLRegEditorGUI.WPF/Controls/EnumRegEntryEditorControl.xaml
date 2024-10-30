@@ -1,0 +1,13 @@
+﻿<UserControl x:Name="self"
+             x:Class="PCLRegEditorGUI.WPF.Controls.EnumRegEntryEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PCLRegEditorGUI.WPF.Controls"
+             mc:Ignorable="d">
+  <ComboBox IsEditable="{Binding IsEditable, ElementName=self, Mode=TwoWay}"
+            ItemsSource="{Binding Names, ElementName=self, Mode=OneWay}"
+            Text="{Binding Text, ElementName=self, Mode=TwoWay}"
+            LostFocus="ComboBox_LostFocus" />
+</UserControl>
